@@ -1,12 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 #Flask app initialization / 겍체 인스턴스 생성
 app = Flask(__name__)
 
 
-@app.route('/') # 접속하는 url
+@app.route('/', methods=('GET', 'POST')) # 접속하는 url
 def index():
-    return render_template('index.html')
+    if request.method == 'POST':
+        print(request.form.get('user')) # POST request data
+        user = request.form.get('user')
+        data = {'level':60, 'point':360, 'exp':1234567890}
+        return render_template('index.html', user=user, data=data)
+    elif request.method == 'GET':
+        user = "user"
+        data = {'level':60, 'point':360, 'exp':1234567890}
+        return render_template('index.html', user=user, data=data)
 
 if __name__ == '__main__':
     app.run(debug=True) # Flask app을 debug mode로 실행
